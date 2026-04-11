@@ -1,0 +1,28 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for bootstrap
+- name: install packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  loop:
+    - "{{ wiki_packages }}"
+
+- name: add ppa:ondrej/php
+  apt_repository:
+    repo: 'ppa:ondrej/php'
+    state: present
+
+- name: install php 8.2 and extensions
+  apt:
+    name:
+      - php8.2
+      - php8.2-fpm
+      - php8.2-pgsql
+      - php8.2-intl
+      - php8.2-mbstring
+      - php8.2-xml
+      - php8.2-curl
+    state: present
+    update_cache: yes

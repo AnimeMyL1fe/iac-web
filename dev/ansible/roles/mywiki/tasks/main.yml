@@ -1,0 +1,35 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for mywiki
+- name: download MediaWiki
+  get_url:
+    url: "{{ url }}"
+    dest: /tmp/
+
+- name: create directory for MediaWiki
+  file:
+    path: "{{ path_mywiki }}"
+    state: directory
+    owner: "www-data"
+
+- name: Extract mediawiki.tar.gz into /var/www/mediawiki
+  unarchive:
+    src: /tmp/mediawiki-1.45.3.tar.gz
+    dest: "{{ path_mywiki}}"
+    extra_opts: [--strip-components=1]
+    remote_src: yes
+
+- name: install MediaWiki
+  shell: >
+    php maintenance/run.php install 
+    --dbtype="postgres" 
+    --dbname="{{ mw_db_name }}" 
+    --dbserver="{{ db_host }}" 
+    --dbuser="{{ mw_db_user }}" 
+    --dbpass="{{ mw_db_password}}" 
+    --server="http://{{ ansible_host }}" 
+    --pass="{{ mediawiki_admin_pass }}" 
+    "{{ mediawiki_name }}" "{{ mediawiki_admin_user }}"
+  args:
+    chdir: "{{ path_mywiki}}"
+    creates: "{{ path_mywiki}}/LocalSettings.php"

@@ -1,0 +1,39 @@
+dev:
+  children: 
+#-------------WEB_SERVERS_GROUP-----------------
+    web_servers: 
+      hosts: 
+        mediawiki:
+          ansible_host: 111.88.248.21
+          internal_ip:  10.10.10.15
+          db_host: 10.10.10.15
+
+    db_servers:
+      hosts:
+        mw_database:
+          ansible_host: 93.77.185.80
+          internal_ip:  10.10.10.26
+        zbx_database:
+          ansible_host: 111.88.248.118
+          internal_ip:  10.10.10.23
+
+
+    lb_servers:
+      hosts:
+        nginx-lb:
+          ansible_host: 111.88.248.65
+          internal_ip:  10.10.10.27
+      #-------ZABBIX_GROUP----------- 
+
+    zabbix_servers:
+      hosts:
+        zabbix:
+          ansible_host: 93.77.180.195
+          internal_ip:  10.10.10.33
+          db_host: 10.10.10.23
+
+  vars:
+    ansible_user: ubuntu
+    ansible_ssh_private_key_file: ~/.ssh/yandex_key 
+    connection_protocol: ssh
+    ansible_become: true 

@@ -1,12 +1,50 @@
 dev:
-  children: #Обозначение, что будет подгруппа хостов
-    some_group: #Имя подгруппы хостов
+  children: 
+#-------------WEB_SERVERS_GROUP-----------------
+    web_servers: 
       hosts: 
 %{for name, vm in vms ~}
+%{ if length(regexall("mediawiki", name)) > 0 ~}
         ${name}:
           ansible_host: ${vm.public_ip}
           internal_ip:  ${vm.private_ip}
-%{  endfor ~}
+          db_host: ${mw_db_internal_ip}
+%{ endif ~}
+%{ endfor ~}
+
+    db_servers:
+      hosts:
+%{for name, vm in vms ~}
+%{ if length(regexall("database", name)) > 0 ~}
+        ${name}:
+          ansible_host: ${vm.public_ip}
+          internal_ip:  ${vm.private_ip}
+%{ endif ~}
+%{ endfor ~}
+
+
+    lb_servers:
+      hosts:
+%{for name, vm in vms ~}
+%{ if length(regexall("lb", name)) > 0 ~}
+        ${name}:
+          ansible_host: ${vm.public_ip}
+          internal_ip:  ${vm.private_ip}
+%{ endif ~}
+%{ endfor ~}
+      #-------ZABBIX_GROUP----------- 
+
+    zabbix_servers:
+%{for name, vm in vms ~}
+%{ if length(regexall("zabbix", name)) > 0 ~}
+      hosts:
+        ${name}:
+          ansible_host: ${vm.public_ip}
+          internal_ip:  ${vm.private_ip}
+          db_host: ${zbx_db_internal_ip}
+%{ endif ~}
+%{ endfor ~}
+
   vars:
     ansible_user: ${ans_user}
     ansible_ssh_private_key_file: ${ans_ssh_key} 

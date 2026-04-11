@@ -1,0 +1,21 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for postgresql
+- name: install python3-psycopg2
+  apt:
+    name: python3-psycopg2
+    state: present
+    update_cache: yes
+
+- name: create db user
+  become_user: postgres
+  postgresql_user:
+    name: "{{ mw_db_user }}"
+    password: "{{ mw_db_password }}"
+
+
+- name: create db
+  become_user: postgres
+  postgresql_db:
+    name: "{{ mw_db_name }}"
+    owner: "{{ mw_db_user }}"
