@@ -1,5 +1,5 @@
 output "sg_id" {
-  value = yandex_vpc_security_group.sg1_web.id
+  value = yandex_vpc_security_group.sg1.id
 }
 
 output "sub_id" {

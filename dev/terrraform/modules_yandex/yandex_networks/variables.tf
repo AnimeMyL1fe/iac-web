@@ -1,19 +1,11 @@
 #======================================
-# YANDEX_NETWORKS VARIBLES
+# YANDEX_NETWORKS VARIABLES
 #======================================
-
-#-----------------------
-# provider
-#-----------------------
-variable "yandex_zone" {
-  type = string
-  default = "ru-central1-a"
-}
 
 #-----------------------
 # security_group
 #-----------------------
-variable "allowe_ports" {
+variable "allowed_ports" {
   type = list(string)
 }
 

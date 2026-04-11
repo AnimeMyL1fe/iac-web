@@ -1,5 +1,5 @@
 #======================================
-# YANDEX_INSTANCES VARIBLES
+# YANDEX_INSTANCES VARIABLES
 #======================================
 
 #-----------------------
@@ -11,23 +11,13 @@ variable "yandex_zone" {
 }
 
 #-----------------------
-# disk configuration
-#-----------------------
-variable "yandex_disk" {
-  type = map(object({
-    disk_name = string
-    disk_type = string
-    disk_size = number
-  }))
-}
-
-
-#-----------------------
 # configuration cloud vm
 #-----------------------
 
 variable "vm_configuration" {
   type = map(object({
+    disk_name   = string
+    disk_type   = string
     vm_name     = string
     vm_profile  = string
   }))
@@ -35,9 +25,11 @@ variable "vm_configuration" {
 
 variable "vms_profile" {
   type = map(object({
-    platform_id = string
-    cores       = number
-    memory      = number
+    platform_id   = string
+    core_fraction = number
+    cores         = number
+    memory        = number
+    disk_size     = number
   }))
 }
 
@@ -49,3 +41,11 @@ variable "security_group_id" {}
 variable "path_ssh" {
   type = string
 }
+variable "private_path_ssh" {
+  type = string
+}
+
+variable "vm_user" {
+  type = string
+}
+

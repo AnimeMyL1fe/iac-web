@@ -1,0 +1,25 @@
+dev:
+  children: #Обозначение, что будет подгруппа хостов
+    some_group: #Имя подгруппы хостов
+      hosts: 
+        database:
+          ansible_host: 111.88.247.197
+          internal_ip:  10.10.10.5
+          your_variable: "значение" #Переменная, которая будет доступна при работе с этой машиной
+        nginx:
+          ansible_host: 111.88.248.156
+          internal_ip:  10.10.10.4
+          your_variable: "значение" #Переменная, которая будет доступна при работе с этой машиной
+        web:
+          ansible_host: 111.88.245.227
+          internal_ip:  10.10.10.32
+          your_variable: "значение" #Переменная, которая будет доступна при работе с этой машиной
+        zabbix:
+          ansible_host: 89.169.153.56
+          internal_ip:  10.10.10.21
+          your_variable: "значение" #Переменная, которая будет доступна при работе с этой машиной
+  vars:
+    ansible_user: ubuntu
+    ansible_ssh_private_key_file: ~/.ssh/yandex_key 
+    connection_protocol: ssh
+    ansible_become: true 
