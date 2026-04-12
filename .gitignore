@@ -37,3 +37,4 @@ override.tf.json
 terraform.rc
 
 dev/ansible/group_vars/*
+dev/ansible/.vault_pass

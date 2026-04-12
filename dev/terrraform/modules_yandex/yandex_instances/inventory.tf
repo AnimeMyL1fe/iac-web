@@ -1,8 +1,17 @@
 locals {
-  vm_ip = {for k, v in yandex_compute_instance.vm_ubuntu : k=>{
+  vm_ip = {
+    for k, v in yandex_compute_instance.vm_ubuntu : k=>{
     private_ip = v.network_interface[0].ip_address
     public_ip  = v.network_interface[0].nat_ip_address
   }}
+  # mwdb_ip = {
+  #   for k,v in yandex_compute_instance.vm_ubuntu : k=> v.network_interface[0].ip_address
+  #   if var.vm_configuration[k].vm_profile == "mw_db"
+  # }
+  # zbxdb_ip = {
+  #   for k, v in yandex_compute_instance.vm_ubuntu : k=> v.network_interface[0].ip_address
+  #   if var.vm_configuration[k].vm_profile == "zbx_db"
+  # }
 }
 
 resource "local_file" "ansible_inventory" {
@@ -10,8 +19,8 @@ resource "local_file" "ansible_inventory" {
     vms                 = local.vm_ip
     ans_user            = var.vm_user
     ans_ssh_key         = var.private_path_ssh
-    mw_db_internal_ip   = yandex_compute_instance.vm_ubuntu["mw_database"].network_interface[0].ip_address
- #   zbx_db_internal_ip  = yandex_compute_instance.vm_ubuntu["zbx_database"].network_interface[0].ip_address
+    mw_db_ips           = yandex_compute_instance.vm_ubuntu["mw-db1"].network_interface[0].ip_address
+ #   zbx_db_internal_ip  = local.zbxdb_ip
   })
   filename = "${path.module}/../../../ansible/inventory/hosts.yaml"
 }

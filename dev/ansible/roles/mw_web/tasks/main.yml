@@ -23,15 +23,16 @@
     remote_src: yes
 
 - name: install MediaWiki
+  run_once: true
   shell: >
     php maintenance/run.php install 
     --dbtype="postgres" 
     --dbname="{{ mw_db_name }}" 
-    --dbserver="{{ db_host }}" 
+    --dbserver="{{ mwdb_host }}" 
     --dbuser="{{ mw_db_user }}" 
     --dbpass="{{ mw_db_password}}" 
     --dbmwschema="public" 
-    --server="http://{{ hostvars["nginx-lb"]["ansible_host"] }}:3000" 
+    --server="http://{{ hostvars["lb-1"]["ansible_host"] }}:3000" 
     --scriptpath=""
     --pass="{{ mediawiki_admin_pass }}" 
     "{{ mediawiki_name }}" "{{ mediawiki_admin_user }}"
@@ -40,9 +41,25 @@
     creates: "{{ path_mywiki }}/LocalSettings.php"
   notify: restart nginx
 
+- name: LocalSettings.php from mw-web1
+  run_once: true
+  fetch:
+    src: "{{ path_mywiki }}/LocalSettings.php"
+    dest: "/tmp/LocalSettings.php"
+    flat: yes
+
+- name: copy LocalSettings.php to all web servers
+  copy:
+    src: "/tmp/LocalSettings.php"
+    dest: "{{ path_mywiki }}/LocalSettings.php"
+    owner: "www-data"
+    group: "www-data"
+    mode: "0644"
+
 - name: permissions for LocalSettings.php
   file:
     path: "{{ path_mywiki }}/LocalSettings.php"
     owner: www-data
     group: www-data
     mode: '0644'
+  notify: restart nginx

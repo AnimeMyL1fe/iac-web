@@ -4,11 +4,11 @@ dev:
     web_servers: 
       hosts: 
 %{for name, vm in vms ~}
-%{ if length(regexall("mediawiki", name)) > 0 ~}
+%{ if length(regexall("web", name)) > 0 ~}
         ${name}:
           ansible_host: ${vm.public_ip}
           internal_ip:  ${vm.private_ip}
-          db_host: ${mw_db_internal_ip}
+          mwdb_host: ${mw_db_ips}
 %{ endif ~}
 %{ endfor ~}
 
@@ -16,7 +16,7 @@ dev:
     mwdb_servers:
       hosts:
 %{for name, vm in vms ~}
-%{ if length(regexall("database", name)) > 0 ~}
+%{ if length(regexall("mw-db", name)) > 0 ~}
         ${name}:
           ansible_host: ${vm.public_ip}
           internal_ip:  ${vm.private_ip}

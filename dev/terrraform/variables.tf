@@ -46,7 +46,7 @@ variable "vms_profile" {
     disk_size     = number
   }))
   default = {
-    "proxy" = {
+    "lb" = {
       platform_id   = "standard-v1"
       core_fraction = 20
       cores         = 2
@@ -57,22 +57,22 @@ variable "vms_profile" {
       platform_id   = "standard-v1"
       core_fraction = 20
       cores         = 2
-      memory        = 4
+      memory        = 2
       disk_size     = 10
     }
     "db" = {
       platform_id   = "standard-v1"
       core_fraction = 20
       cores         = 4
-      memory        = 4
-      disk_size     = 40
+      memory        = 2
+      disk_size     = 10
     }
-    "zabbix" = {
+    "zbx" = {
       platform_id   = "standard-v1"
       core_fraction = 20
       cores         = 2
-      memory        = 4
-      disk_size     = 20
+      memory        = 2
+      disk_size     = 10
     }
   }
 }

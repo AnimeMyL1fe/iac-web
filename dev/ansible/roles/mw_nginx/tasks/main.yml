@@ -1,4 +1,5 @@
 #SPDX-License-Identifier: MIT-0
+# tasks file for mw_nginx
 ---
 - name: install nginx
   apt:
@@ -11,16 +12,16 @@
     path: /etc/nginx/sites-enabled/default
     state: absent
 
-- name: copy proxy config
+- name: copy web config
   template:
-    src: balancer.j2
-    dest: /etc/nginx/sites-available/balancer.conf
+    src: web.j2
+    dest: /etc/nginx/sites-available/web.conf
     mode: "0644"
 
 - name: add symlink
   file:
-    src: /etc/nginx/sites-available/balancer.conf
-    path: /etc/nginx/sites-enabled/balancer.conf
+    src: /etc/nginx/sites-available/web.conf
+    path: /etc/nginx/sites-enabled/web.conf
     state: link
   notify: restart nginx
 
