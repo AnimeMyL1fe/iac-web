@@ -1,6 +1,0 @@
-#SPDX-License-Identifier: MIT-0
----
-# vars file for bootstrap
-wiki_packages: 
-  - nginx 
-  - postgresql 

@@ -3,4 +3,4 @@
   hosts: lb_servers
   roles:
     - bootstrap
-    - nginx-lb
+    - lb_nginx

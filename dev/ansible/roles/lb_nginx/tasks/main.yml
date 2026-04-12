@@ -13,7 +13,7 @@
 
 - name: copy proxy config
   template:
-    src: proxy.j2
+    src: balancer.j2
     dest: /etc/nginx/sites-available/my-service.conf
     mode: "0644"
 

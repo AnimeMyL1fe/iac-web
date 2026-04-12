@@ -1,9 +1,0 @@
----
-- name: setup mediaWiki
-  hosts: web_servers
-  roles:
-    - bootstrap
-    - packages-wiki
-    - nginx
-    - postgresql-wiki
-    - mywiki
