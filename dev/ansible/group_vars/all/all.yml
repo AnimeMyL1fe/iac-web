@@ -1,0 +1,5 @@
+---
+mw_db_user: "wikiuser"
+mw_db_name: "wikidb"
+mw_db_password: "{{ vault_mw_db_password }}"
+mediawiki_admin_pass: "{{ vault_mediawiki_admin_pass }}"

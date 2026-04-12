@@ -1,0 +1,6 @@
+---
+mw_nginx_port: "80"
+path_mywiki: "/var/www/mediawiki"
+url: "https://releases.wikimedia.org/mediawiki/1.45/mediawiki-1.45.3.tar.gz"
+mediawiki_name: "My_wiki"
+mediawiki_admin_user: "admin"
