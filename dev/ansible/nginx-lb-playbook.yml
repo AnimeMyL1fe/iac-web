@@ -1,0 +1,6 @@
+---
+- name: setup lb-nginx
+  hosts: lb_servers
+  roles:
+    - bootstrap
+    - nginx-lb

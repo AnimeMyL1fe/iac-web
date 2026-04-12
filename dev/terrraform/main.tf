@@ -20,7 +20,7 @@ module "yandex_network" {
   cidr_v4       = var.cidr_v4
 }
 module "yandex_instances" {
-  depends_on = [ module.yandex_network ]
+  #depends_on = [ module.yandex_network ]
   source           = "./modules_yandex/yandex_instances"
   
   vm_configuration  = var.vm_configuration

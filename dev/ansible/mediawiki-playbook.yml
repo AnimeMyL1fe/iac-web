@@ -1,6 +1,6 @@
 ---
 - name: setup mediaWiki
-  hosts: mediawiki
+  hosts: web_servers
   roles:
     - bootstrap
     - packages-wiki

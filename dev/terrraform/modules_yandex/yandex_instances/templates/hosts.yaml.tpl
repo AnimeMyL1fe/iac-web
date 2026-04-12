@@ -12,17 +12,6 @@ dev:
 %{ endif ~}
 %{ endfor ~}
 
-    db_servers:
-      hosts:
-%{for name, vm in vms ~}
-%{ if length(regexall("database", name)) > 0 ~}
-        ${name}:
-          ansible_host: ${vm.public_ip}
-          internal_ip:  ${vm.private_ip}
-%{ endif ~}
-%{ endfor ~}
-
-
     lb_servers:
       hosts:
 %{for name, vm in vms ~}
@@ -34,16 +23,7 @@ dev:
 %{ endfor ~}
       #-------ZABBIX_GROUP----------- 
 
-    zabbix_servers:
-%{for name, vm in vms ~}
-%{ if length(regexall("zabbix", name)) > 0 ~}
-      hosts:
-        ${name}:
-          ansible_host: ${vm.public_ip}
-          internal_ip:  ${vm.private_ip}
-          db_host: ${zbx_db_internal_ip}
-%{ endif ~}
-%{ endfor ~}
+
 
   vars:
     ansible_user: ${ans_user}

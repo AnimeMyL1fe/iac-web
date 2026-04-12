@@ -1,6 +1,9 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # tasks file for mywiki
+- name: handlers to restart postgres
+  meta: flush_handlers
+
 - name: download MediaWiki
   get_url:
     url: "{{ url }}"
@@ -27,9 +30,19 @@
     --dbserver="{{ db_host }}" 
     --dbuser="{{ mw_db_user }}" 
     --dbpass="{{ mw_db_password}}" 
-    --server="http://{{ ansible_host }}" 
+    --dbmwschema="public" 
+    --server="http://{{ hostvars["nginx-lb"]["ansible_host"] }}:3000" 
+    --scriptpath=""
     --pass="{{ mediawiki_admin_pass }}" 
     "{{ mediawiki_name }}" "{{ mediawiki_admin_user }}"
   args:
-    chdir: "{{ path_mywiki}}"
-    creates: "{{ path_mywiki}}/LocalSettings.php"
+    chdir: "{{ path_mywiki }}"
+    creates: "{{ path_mywiki }}/LocalSettings.php"
+  notify: restart nginx
+
+- name: permissions for LocalSettings.php
+  file:
+    path: "{{ path_mywiki }}/LocalSettings.php"
+    owner: www-data
+    group: www-data
+    mode: '0644'
