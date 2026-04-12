@@ -1,0 +1,19 @@
+---
+- hosts: all
+  gather_facts: yes
+
+- hosts: mwdb_servers
+  roles:
+    - bootstrap
+    - mw_db
+
+- hosts: web_servers
+  roles:
+    - bootstrap
+    - mw_packages
+    - mw_nginx
+    - mw_web
+
+- hosts: lb_servers
+  roles:
+    - lb_nginx

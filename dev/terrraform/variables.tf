@@ -46,7 +46,7 @@ variable "vms_profile" {
     disk_size     = number
   }))
   default = {
-    "proxy" = {
+    "lb" = {
       platform_id   = "standard-v1"
       core_fraction = 20
       cores         = 2
