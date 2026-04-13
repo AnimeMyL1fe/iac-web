@@ -1,6 +1,6 @@
 dev:
   children: 
-      # --- WEB SERVERS ---
+    # --- WEB SERVERS ---
     web_servers: 
       hosts: 
 %{for name, vm in vms ~}
@@ -12,7 +12,7 @@ dev:
 %{ endif ~}
 %{ endfor ~}
 
-      # --- MW_DB SERVERS --- 
+    # --- MW_DB SERVERS --- 
     mwdb_servers:
       hosts:
 %{for name, vm in vms ~}
@@ -23,11 +23,23 @@ dev:
 %{ endif ~}
 %{ endfor ~}
 
-      # --- LB SERVERS ---
+
+    # --- LB SERVERS ---
     lb_servers:
       hosts:
 %{for name, vm in vms ~}
 %{ if length(regexall("lb", name)) > 0 ~}
+        ${name}:
+          ansible_host: ${vm.public_ip}
+          internal_ip:  ${vm.private_ip}
+%{ endif ~}
+%{ endfor ~}
+
+      # --- ZBX SERVERS ---
+    zbx-servers:
+%{for name, vm in vms ~}
+%{ if length(regexall("zbx", name)) > 0 ~}
+      hosts:
         ${name}:
           ansible_host: ${vm.public_ip}
           internal_ip:  ${vm.private_ip}

@@ -1,0 +1,14 @@
+#SPDX-License-Identifier: MIT-0
+---
+# handlers file for zbx_server
+- name: start service
+  service:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  loop: "{{ zabbix_services }}"
+
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted

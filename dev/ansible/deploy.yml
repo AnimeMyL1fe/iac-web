@@ -14,6 +14,13 @@
     - mw_nginx
     - mw_web
 
+- hosts: zbx-servers
+  roles:
+    - bootstrap
+    - zbx_server
+
+
 - hosts: lb_servers
   roles:
     - lb_nginx
+

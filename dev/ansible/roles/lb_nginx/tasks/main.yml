@@ -11,17 +11,24 @@
     path: /etc/nginx/sites-enabled/default
     state: absent
 
-- name: copy lb config
+- name: copy mediawiki config
   template:
-    src: balancer.j2
-    dest: /etc/nginx/sites-available/balancer.conf
+    src: "{{ item }}"
+    dest: /etc/nginx/sites-available/"{{ item }}"
     mode: "0644"
+  loop:
+    - mediawiki.conf.j2
+    - zabbix.conf.j2
+  notify: restart nginx
 
 - name: add symlink
   file:
-    src: /etc/nginx/sites-available/balancer.conf
-    path: /etc/nginx/sites-enabled/balancer.conf
+    src: /etc/nginx/sites-available/"{{ item }}"
+    path: /etc/nginx/sites-enabled/"{{ item }}"
     state: link
+  loop:
+    - mediawiki.conf.j2
+    - zabbix.conf.j2
   notify: restart nginx
 
 - name: start nginx

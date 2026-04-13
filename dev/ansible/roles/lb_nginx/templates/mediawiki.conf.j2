@@ -1,6 +1,6 @@
 upstream mediawiki_backend {
     ip_hash;
-    server {{ hostvars['mw-web1']['internal_ip'] }}:80 weight=5;
+    server {{ hostvars['mw-web1']['internal_ip'] }}:8000 weight=5;
     server {{ hostvars['mw-web2']['internal_ip'] }}:80 weight=3;
 }
 

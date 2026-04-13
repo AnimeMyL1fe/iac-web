@@ -1,0 +1,12 @@
+---
+- hosts: all
+  gather_facts: yes
+
+- hosts: lb_servers
+  roles:
+    - lb_nginx
+
+- hosts: zbx-servers
+  roles:
+    - bootstrap
+    - zbx_server

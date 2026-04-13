@@ -1,0 +1,8 @@
+---
+zbxdb_name: "zabbix"
+zbxdb_user: "zabbix"
+zabbix_services:
+  - zabbix-server
+  - zabbix-agent2
+  - nginx
+  - php8.1-fpm

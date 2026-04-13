@@ -14,17 +14,25 @@ resource "yandex_vpc_security_group" "sg1" {
 
   ingress {
     protocol       = "TCP"
-    description    = "rule1 description"
+    description    = "web"
     v4_cidr_blocks = var.cidr_v4
     port           = "80"
   }
 
   ingress {
     protocol       = "TCP"
-    description    = "rule1 description"
+    description    = "postgresql"
     v4_cidr_blocks = var.cidr_v4
     port           = "5432"
   }
+
+  ingress {
+    protocol       = "TCP"
+    description    = "zabbix"
+    v4_cidr_blocks = var.cidr_v4
+    port           = "8080"
+  }
+
 
   egress {
     protocol       = "ANY"

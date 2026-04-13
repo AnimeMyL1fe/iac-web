@@ -67,7 +67,7 @@ variable "vms_profile" {
       memory        = 4
       disk_size     = 40
     }
-    "zabbix" = {
+    "zbx" = {
       platform_id   = "standard-v1"
       core_fraction = 20
       cores         = 2
