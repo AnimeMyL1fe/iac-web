@@ -1,0 +1,23 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for mw_pg_backup_db
+- name: deploy script
+  template: 
+    src: pg_backup.sh.j2
+    dest: /usr/local/bin/pg_backup.sh
+    mode: "0755"
+
+- name: deploy service and timer
+  template: 
+    src: "{{ item.src }}"
+    dest: "/etc/systemd/system/{{ item.dest }}"
+  loop:
+    - { src: "pg_backup.service.j2", dest: "pg_backup.service" }
+    - { src: "pg_backup.timer.j2", dest: "pg_backup.timer" }
+  notify: reload systemd
+
+- name: start timer
+  ansible.builtin.systemd_service:
+    name: pg_backup.timer
+    state: started
+    enabled: true

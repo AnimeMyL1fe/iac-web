@@ -4,3 +4,12 @@ mw_db_name: "wikidb"
 mw_db_password: "{{ vault_mw_db_password }}"
 zbxdb_password: "{{ valut_zbxdb_password }}"
 mediawiki_admin_pass: "{{ vault_mediawiki_admin_pass }}"
+
+
+#---------
+# zabbix-agent2 plugins
+#-----
+zxb_agent_plugins: 
+  - zabbix-agent2-plugin-mongodb 
+  - zabbix-agent2-plugin-mssql 
+  - zabbix-agent2-plugin-postgresql 

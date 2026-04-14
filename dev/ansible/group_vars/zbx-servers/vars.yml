@@ -1,6 +1,15 @@
 ---
 zbxdb_name: "zabbix"
 zbxdb_user: "zabbix"
+zabbix_package:
+  - zabbix-server-pgsql
+  - zabbix-frontend-php
+  - php8.1-pgsql
+  - zabbix-nginx-conf
+  - zabbix-sql-scripts
+  - zabbix-agent2
+  - python3-psycopg2
+  - postgresql
 zabbix_services:
   - zabbix-server
   - zabbix-agent2

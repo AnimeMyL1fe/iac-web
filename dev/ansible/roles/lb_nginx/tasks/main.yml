@@ -13,22 +13,22 @@
 
 - name: copy mediawiki config
   template:
-    src: "{{ item }}"
-    dest: /etc/nginx/sites-available/"{{ item }}"
+    src: "{{ item.src }}"
+    dest: /etc/nginx/sites-available/{{ item.dest }}
     mode: "0644"
   loop:
-    - mediawiki.conf.j2
-    - zabbix.conf.j2
+    - { src: 'mediawiki.conf.j2', dest: 'mediawiki.conf' }
+    - { src: 'zabbix.conf.j2', dest: 'zabbix.conf'}
   notify: restart nginx
 
 - name: add symlink
   file:
-    src: /etc/nginx/sites-available/"{{ item }}"
-    path: /etc/nginx/sites-enabled/"{{ item }}"
+    src: /etc/nginx/sites-available/{{ item.dest }}
+    path: /etc/nginx/sites-enabled/{{ item.dest }}
     state: link
   loop:
-    - mediawiki.conf.j2
-    - zabbix.conf.j2
+    - { dest: 'mediawiki.conf' }
+    - { dest: 'zabbix.conf' }
   notify: restart nginx
 
 - name: start nginx

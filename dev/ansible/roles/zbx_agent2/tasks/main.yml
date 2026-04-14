@@ -1,0 +1,46 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for zbx_agent2
+- name: zabbix repo
+  get_url:
+    url: https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.0+ubuntu22.04_all.deb
+    dest: /tmp/zabbix.deb
+    mode: '0644'
+  
+- name: install repo
+  apt:
+    deb: /tmp/zabbix.deb
+ 
+- name: update cache
+  apt:
+    update_cache: yes
+  
+- name: install zabbix
+  apt:
+    name: zabbix-agent2
+
+- name: install zabbix agent2 plugins
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ zxb_agent_plugins }}"
+
+- name: configuration agent
+  lineinfile:
+    path: /etc/zabbix/zabbix_agent2.conf
+    regexp: '^#?{{ item.key }}='
+    line: '{{ item.key }}={{ item.value }}'
+  loop:
+    - { key: 'Server', value: '{{ hostvars["zbx-server1"]["internal_ip"] }}' }
+    - { key: 'ServerActive', value: '{{ hostvars["zbx-server1"]["internal_ip"] }}'}
+    - { key: 'Hostname', value: '{{ hostvars["zbx-server1"]["internal_ip"] }}' }
+  notify: restart zabbix-agent2
+
+
+- name: start zabbix-agent2
+  service:
+    name: zabbix-agent2
+    state: started
+    enabled: yes
+
+  

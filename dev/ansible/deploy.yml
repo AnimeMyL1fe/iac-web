@@ -2,10 +2,18 @@
 - hosts: all
   gather_facts: yes
 
+- hosts: zbx-servers
+  roles:
+    - bootstrap
+    - zbx_server
+
 - hosts: mwdb_servers
   roles:
     - bootstrap
     - mw_db
+    - mw_pg_backup_db
+    - zbx_agent2
+
 
 - hosts: web_servers
   roles:
@@ -13,14 +21,11 @@
     - mw_packages
     - mw_nginx
     - mw_web
-
-- hosts: zbx-servers
-  roles:
-    - bootstrap
-    - zbx_server
-
+    - zbx_agent2
 
 - hosts: lb_servers
   roles:
     - lb_nginx
+    - zbx_agent2
+    - final_check
 

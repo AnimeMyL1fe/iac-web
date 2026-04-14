@@ -1,0 +1,8 @@
+[Unit]
+Description=Zabbix Database Backup
+After=postgresql.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/pg_backup.sh
+User=root
