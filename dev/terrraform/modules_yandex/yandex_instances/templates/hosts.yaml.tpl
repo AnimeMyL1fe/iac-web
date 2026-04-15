@@ -12,11 +12,23 @@ dev:
 %{ endif ~}
 %{ endfor ~}
 
-    # --- MW_DB SERVERS --- 
-    mwdb_servers:
+    # --- MW_DB_MASTER SERVERS --- 
+    mwdb_servers_master:
       hosts:
 %{for name, vm in vms ~}
-%{ if length(regexall("mw-db", name)) > 0 ~}
+%{ if length(regexall("mw-db-master", name)) > 0 ~}
+        ${name}:
+          ansible_host: ${vm.public_ip}
+          internal_ip:  ${vm.private_ip}
+%{ endif ~}
+%{ endfor ~}
+
+
+    # --- MW_DB_REPLICA SERVERS --- 
+    mwdb_servers_replica:
+      hosts:
+%{for name, vm in vms ~}
+%{ if length(regexall("mw-db-replica", name)) > 0 ~}
         ${name}:
           ansible_host: ${vm.public_ip}
           internal_ip:  ${vm.private_ip}

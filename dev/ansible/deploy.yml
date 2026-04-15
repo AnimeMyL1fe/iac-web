@@ -11,7 +11,7 @@
   roles:
     - bootstrap
     - mw_db
-    - mw_pg_backup_db
+    - mw_backup_db
     - zbx_agent2
 
 
@@ -21,6 +21,7 @@
     - mw_packages
     - mw_nginx
     - mw_web
+    - web_backup
     - zbx_agent2
 
 - hosts: lb_servers

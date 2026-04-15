@@ -1,0 +1,23 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for web_backup
+- name: create archive
+  archive:
+    path: /var/www/mediawiki
+    dest: "{{ web_backup_file }}"
+    format: zstd
+
+- name: copy on ansible master host
+  fetch:
+    src: "{{ web_backup_file }}"
+    dest: "/backups/wiki/{{ inventory_hostname }}_{{ ansible_date_time.date }}.tar.zst"
+    flat: yes
+
+- name: remove file
+  file:
+    path: "{{ web_backup_file }}"
+    state: absent
+
+
+
+

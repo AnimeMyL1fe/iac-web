@@ -13,3 +13,10 @@ zxb_agent_plugins:
   - zabbix-agent2-plugin-mongodb 
   - zabbix-agent2-plugin-mssql 
   - zabbix-agent2-plugin-postgresql 
+
+#---
+#
+#
+
+db_backup_file: "/tmp/mw_db_backup_{{ ansible_date_time.date }}.sql"
+web_backup_file: "/tmp/mw_web_backup_{{ ansible_date_time.date }}.tar.zst"

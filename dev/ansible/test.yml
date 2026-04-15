@@ -6,7 +6,3 @@
   roles:
     - lb_nginx
 
-- hosts: zbx-servers
-  roles:
-    - bootstrap
-    - zbx_server

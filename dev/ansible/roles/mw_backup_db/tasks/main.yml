@@ -1,0 +1,21 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for mw_pg_backup_db
+- name: postgresqk pg_dump
+  postgresql_db:
+    become_user: postgres
+    state: dump
+    name: "{{ mwdb_name }}"
+    target: "{{ db_backup_file }}"
+
+- name: copy on ansible master host
+  fetch:
+    src: "{{ db_backup_file }}"
+    dest: "/backups/db/{{ inventory_hostname }}_{{ ansible_date_time.date }}.sql"
+    flat: yes
+
+- name: remove file
+  file:
+    path: "{{ db_backup_file }}"
+    state: absent
+
