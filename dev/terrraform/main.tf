@@ -1,18 +1,3 @@
-#   required_version = ">= 0.13"
-#   backend "s3" {
-#     endpoints = {
-#       s3 = "https://storage.yandexcloud.net"
-#     }
-#     bucket = "ya-prac-grishin"
-#     region = "ru-central1"
-#     key    = "prac/instance/terraform.tfstate"
-
-#     skip_region_validation      = true
-#     skip_credentials_validation = true
-#     skip_requesting_account_id  = true 
-#     skip_s3_checksum            = true 
-#   }
-
 module "yandex_network" {
   source        = "./modules_yandex/yandex_networks"
 
@@ -30,4 +15,5 @@ module "yandex_instances" {
   vm_user           = var.vm_user
   subnet_id         = module.yandex_network.sub_id
   security_group_id = module.yandex_network.sg_id
+  static_ip         = module.yandex_network.static_ip 
 }

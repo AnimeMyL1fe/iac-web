@@ -1,22 +1,30 @@
 ---
+#------
+# db
+#------
 mw_db_user: "wikiuser"
 mw_db_name: "wikidb"
+
+#---------
+# secrets
+#--------
 mw_db_password: "{{ vault_mw_db_password }}"
 zbxdb_password: "{{ valut_zbxdb_password }}"
 mediawiki_admin_pass: "{{ vault_mediawiki_admin_pass }}"
-
+yc_access_key: "{{ valut_yc_access_key }}"
+yc_secret_key: "{{ valut_yc_secret_key }}"
 
 #---------
 # zabbix-agent2 plugins
-#-----
+#---------
 zxb_agent_plugins: 
   - zabbix-agent2-plugin-mongodb 
   - zabbix-agent2-plugin-mssql 
   - zabbix-agent2-plugin-postgresql 
 
-#---
-#
-#
+#-------
+# backup
+#-------
 
 db_backup_file: "/tmp/mw_db_backup_{{ ansible_date_time.date }}.sql"
 web_backup_file: "/tmp/mw_web_backup_{{ ansible_date_time.date }}.tar.zst"

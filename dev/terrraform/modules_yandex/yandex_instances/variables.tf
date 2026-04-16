@@ -37,6 +37,7 @@ variable "subnet_id" {}
 
 variable "security_group_id" {}
 
+variable "static_ip" {}
 
 variable "path_ssh" {
   type = string

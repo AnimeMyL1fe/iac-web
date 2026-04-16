@@ -7,11 +7,10 @@
     - bootstrap
     - zbx_server
 
-- hosts: mwdb_servers
+- hosts: mwdb_servers_master
   roles:
     - bootstrap
-    - mw_db
-    - mw_backup_db
+    - mw_db_master
     - zbx_agent2
 
 
@@ -21,12 +20,23 @@
     - mw_packages
     - mw_nginx
     - mw_web
-    - web_backup
     - zbx_agent2
 
 - hosts: lb_servers
   roles:
     - lb_nginx
     - zbx_agent2
+    
+- hosts: mwdb_servers_replica
+  roles:
+    - bootstrap
+    - mw_db_replica
+    - zbx_agent2
+    
+- hosts: check
     - final_check
 
+
+
+
+    

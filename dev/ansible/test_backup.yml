@@ -11,6 +11,7 @@
   roles:
     - bootstrap
     - mw_db_replica
+    - mw_backup_db
 
 
 

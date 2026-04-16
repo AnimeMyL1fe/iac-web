@@ -9,7 +9,7 @@
     validate_certs: no
   register: web_check
   until: web_check.status in [200, 301, 302]
-  retries: 12
+  retries: 5
   delay: 5
   delegate_to: localhost
 
@@ -21,7 +21,7 @@
     validate_certs: no
   register: zbx_check
   until: zbx_check.status in [200, 301, 302]
-  retries: 12
+  retries: 5
   delay: 5
   delegate_to: localhost
 

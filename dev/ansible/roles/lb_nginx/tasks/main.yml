@@ -1,10 +1,12 @@
 #SPDX-License-Identifier: MIT-0
 ---
-- name: install nginx
+- name: install lb-packages
   apt:
-   name: nginx
+   name: "{{ item }}"
    state: present
    update_cache: yes
+  loop: "{{ lb_packages }}"
+
 
 - name: remove default config
   file:
@@ -31,8 +33,15 @@
     - { dest: 'zabbix.conf' }
   notify: restart nginx
 
-- name: start nginx
+- name: copy keepalived.conf
+  template:
+    src: keepalived.conf.j2
+    dest: /etc/keepalived/keepalived.conf
+  notify: restart keepalived
+
+- name: start service
   service:
-    name: nginx
+    name: "{{ item }}"
     enabled: yes
     state: started
+  loop: "{{ lb_packages }}"
