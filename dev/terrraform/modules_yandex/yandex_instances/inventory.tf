@@ -11,7 +11,6 @@ resource "local_file" "ansible_inventory" {
     ans_user            = var.vm_user
     ans_ssh_key         = var.private_path_ssh
     mw_db_internal_ip   = yandex_compute_instance.vm_ubuntu["mw-db-master"].network_interface[0].ip_address
-    lb_static_ip        = var.static_ip
   })
   filename = "${path.module}/../../../ansible/inventory/hosts.yaml"
 }

@@ -43,7 +43,6 @@ dev:
 %{ if length(regexall("lb", name)) > 0 ~}
         ${name}:
           ansible_host: ${vm.private_ip}
-          static_ip: ${lb_static_ip}
           internal_ip:  ${vm.private_ip}
 %{ endif ~}
 %{ endfor ~}

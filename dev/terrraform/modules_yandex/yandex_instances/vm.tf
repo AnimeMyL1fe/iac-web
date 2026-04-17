@@ -18,7 +18,7 @@ resource "yandex_compute_instance" "vm_ubuntu" {
     index               = 1
     subnet_id           = var.subnet_id
     security_group_ids  = [var.security_group_id]
-    nat                 = true
+    nat                 = false
   }
 
   metadata = {

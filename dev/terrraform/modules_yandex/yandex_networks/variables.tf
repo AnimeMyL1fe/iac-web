@@ -4,9 +4,10 @@
 #-----------------------
 # zone
 #-----------------------
-# variable "yandex_zone" {
-#   type = string
-# }
+variable "yandex_zone" {
+  type = string
+  default = "ru-central1-a"
+}
 #-----------------------
 # security_group
 #-----------------------
