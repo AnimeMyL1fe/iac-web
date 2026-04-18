@@ -33,6 +33,14 @@ resource "yandex_vpc_security_group" "sg1" {
     port           = "8080"
   }
 
+  ingress {
+    protocol       = "TCP"
+    description    = "ssh"
+    v4_cidr_blocks = var.cidr_v4
+    port           = "22"
+  }
+
+
 
   egress {
     protocol       = "ANY"

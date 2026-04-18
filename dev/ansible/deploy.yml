@@ -2,7 +2,7 @@
 - hosts: all
   gather_facts: yes
 
-- hosts: zbx-servers
+- hosts: zbx_servers
   roles:
     - bootstrap
     - zbx_server

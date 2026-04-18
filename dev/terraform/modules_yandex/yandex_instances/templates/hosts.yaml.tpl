@@ -6,8 +6,7 @@ dev:
 %{for name, vm in vms ~}
 %{ if length(regexall("mw-web", name)) > 0 ~}
         ${name}:
-          ansible_host: ${vm.public_ip}
-          internal_ip:  ${vm.private_ip}
+          ansible_host: ${vm.private_ip}
           db_host: ${mw_db_internal_ip}
 %{ endif ~}
 %{ endfor ~}
@@ -18,8 +17,7 @@ dev:
 %{for name, vm in vms ~}
 %{ if length(regexall("mw-db-master", name)) > 0 ~}
         ${name}:
-          ansible_host: ${vm.public_ip}
-          internal_ip:  ${vm.private_ip}
+          ansible_host: ${vm.private_ip}
 %{ endif ~}
 %{ endfor ~}
 
@@ -30,36 +28,35 @@ dev:
 %{for name, vm in vms ~}
 %{ if length(regexall("mw-db-replica", name)) > 0 ~}
         ${name}:
-          ansible_host: ${vm.public_ip}
-          internal_ip:  ${vm.private_ip}
+          ansible_host: ${vm.private_ip}
 %{ endif ~}
 %{ endfor ~}
 
-
-    # --- LB SERVERS ---
+    # --- LB SERVERS --- 
     lb_servers:
       hosts:
-%{for name, vm in vms ~}
-%{ if length(regexall("lb", name)) > 0 ~}
-        ${name}:
-          ansible_host: ${vm.private_ip}
-          internal_ip:  ${vm.private_ip}
-%{ endif ~}
-%{ endfor ~}
+        ${lb_name1}:
+          ansible_host: ${lb_nat_ip1}
+          internal_ip:  ${lb_ip1}          
+        ${lb_name2}:
+          ansible_host: ${lb_nat_ip2}
+          internal_ip:  ${lb_ip2}     
+
+
 
       # --- ZBX SERVERS ---
-    zbx-servers:
+    zbx_servers:
 %{for name, vm in vms ~}
 %{ if length(regexall("zbx", name)) > 0 ~}
       hosts:
         ${name}:
-          ansible_host: ${vm.public_ip}
-          internal_ip:  ${vm.private_ip}
+          ansible_host: ${vm.private_ip}
 %{ endif ~}
 %{ endfor ~}
 
   vars:
     ansible_user: ${ans_user}
+    ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q -i ${ans_ssh_key}  ${ans_user}@${lb_nat_ip1}"'
     ansible_ssh_private_key_file: ${ans_ssh_key} 
     connection_protocol: ssh
     ansible_become: true 

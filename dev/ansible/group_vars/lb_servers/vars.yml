@@ -1,5 +1,2 @@
 ---
 lb_nginx_port: "3000"
-lb_packages: 
-  - nginx
-  - keepalived

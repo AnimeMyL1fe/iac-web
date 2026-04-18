@@ -33,6 +33,7 @@ variable "vms_profile" {
   }))
 }
 
+
 variable "subnet_id" {} 
 
 variable "security_group_id" {}
@@ -48,4 +49,6 @@ variable "private_path_ssh" {
 variable "vm_user" {
   type = string
 }
-
+# inventory
+variable "lb_nat_ip" {}
+variable "lb_ip" {}

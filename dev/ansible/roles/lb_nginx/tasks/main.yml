@@ -2,10 +2,9 @@
 ---
 - name: install lb-packages
   apt:
-   name: "{{ item }}"
+   name: nginx
    state: present
    update_cache: yes
-  loop: "{{ lb_packages }}"
 
 
 - name: remove default config
@@ -33,15 +32,8 @@
     - { dest: 'zabbix.conf' }
   notify: restart nginx
 
-- name: copy keepalived.conf
-  template:
-    src: keepalived.conf.j2
-    dest: /etc/keepalived/keepalived.conf
-  notify: restart keepalived
-
 - name: start service
   service:
-    name: "{{ item }}"
+    name: nginx
     enabled: yes
     state: started
-  loop: "{{ lb_packages }}"

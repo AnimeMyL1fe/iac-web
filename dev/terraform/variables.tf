@@ -135,3 +135,4 @@ variable "private_path_ssh" {
 variable "vm_user" {
   type = string
 }
+

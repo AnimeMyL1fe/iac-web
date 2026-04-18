@@ -31,9 +31,9 @@
     regexp: '^#?{{ item.key }}='
     line: '{{ item.key }}={{ item.value }}'
   loop:
-    - { key: 'Server', value: '{{ hostvars["zbx-server1"]["internal_ip"] }}' }
-    - { key: 'ServerActive', value: '{{ hostvars["zbx-server1"]["internal_ip"] }}'}
-    - { key: 'Hostname', value: '{{ hostvars["zbx-server1"]["internal_ip"] }}' }
+    - { key: 'Server', value: '{{ hostvars["zbx-server1"]["ansible_host"] }}' }
+    - { key: 'ServerActive', value: '{{ hostvars["zbx-server1"]["ansible_host"] }}'}
+    - { key: 'Hostname', value: '{{ hostvars["zbx-server1"]["ansible_host"] }}' }
   notify: restart zabbix-agent2
 
 

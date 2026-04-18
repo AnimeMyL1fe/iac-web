@@ -9,5 +9,4 @@
   apt: 
     name: "{{ item }}"
     state: present 
-  loop:
-    - "{{ bootstrap_packages }}" 
+  loop: "{{ bootstrap_packages }}" 

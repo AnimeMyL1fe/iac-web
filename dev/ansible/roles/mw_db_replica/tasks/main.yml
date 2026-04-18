@@ -43,7 +43,7 @@
 - name: backup master database to replica
   become_user: postgres
   shell: |
-    pg_basebackup -h {{ hostvars['mw-db-master']['internal_ip'] }} -D /var/lib/postgresql/14/main -U postgres -P -R -X stream
+    pg_basebackup -h {{ hostvars['mw-db-master']['ansible_host'] }} -D /var/lib/postgresql/14/main -U postgres -P -R -X stream
 
 - name: start postgres
   service:
