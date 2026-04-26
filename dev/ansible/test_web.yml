@@ -1,0 +1,6 @@
+---
+- hosts: web_servers
+  roles:
+    - web_packages
+    - web_nginx
+    - web_mediawiki

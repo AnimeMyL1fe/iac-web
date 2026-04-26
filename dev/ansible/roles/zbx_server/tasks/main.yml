@@ -1,0 +1,135 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for zbx_server
+- name: repo zabbx-server
+  get_url:
+    url: https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.0+ubuntu22.04_all.deb
+    dest: /tmp/zabbix-release.deb
+    mode: '0644'
+
+- name: zabbix-server repo install
+  apt:
+    deb: /tmp/zabbix-release.deb
+    state: present
+
+- name: update_cache
+  apt:
+    update_cache: yes
+
+- name: install zabbix plugins
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ zabbix_package }}"
+
+
+- name: install agent2 plugins
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ zxb_agent_plugins }}"
+
+
+- name: create postgresql user
+  become_user: postgres
+  postgresql_user:
+    name: "{{ zbxdb_user }}"
+    password: "{{ zbxdb_password }}"
+    state: present
+
+- name: create db
+  become_user: postgres
+  postgresql_db:
+    name: "{{ zbxdb_name }}"
+    owner: "{{ zbxdb_user }}"
+    state: present
+
+
+- name: import schema
+  become_user: postgres
+  shell: |
+    zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | psql "{{ zbxdb_name }}"
+    touch /var/lib/postgresql/.zabbix_schema_done
+  args:
+    creates: /var/lib/postgresql/.zabbix_schema_done
+
+
+- name: zabbix user permissions (tables)
+  become_user: postgres
+  postgresql_privs:
+    database: "{{ zbxdb_name }}"
+    privs: ALL
+    type: table
+    objs: ALL_IN_SCHEMA
+    schema: public
+    roles: "{{ zbxdb_user }}"
+
+- name: zabbix user permissions (sequences)
+  become_user: postgres
+  postgresql_privs:
+    database: "{{ zbxdb_name }}"
+    privs: ALL
+    type: sequence
+    objs: ALL_IN_SCHEMA
+    schema: public
+    roles: "{{ zbxdb_user }}"
+
+
+- name: remove default nginx config
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: deploy zabbix nginx config
+  template:
+    src: zabbix.conf.j2
+    dest: /etc/nginx/sites-available/zabbix.conf
+  notify: restart nginx
+
+- name: enable zabbix nginx config
+  file:
+    src: /etc/nginx/sites-available/zabbix.conf
+    dest: /etc/nginx/sites-enabled/zabbix.conf
+    state: link
+  notify: restart nginx
+
+- name: configuration zabbix
+  lineinfile:
+    path: /etc/zabbix/zabbix_server.conf
+    regexp: '^#?{{ item.key }}='
+    line: '{{ item.key }}={{ item.value }}'
+  loop:
+    - { key: 'DBName', value: '{{ zbxdb_name }}' }
+    - { key: 'DBUser', value: '{{ zbxdb_user }}' }
+    - { key: 'DBPassword', value: '{{ zbxdb_password }}' }
+    - { key: 'DBHost', value: "127.0.0.1"  }
+  notify: start service
+
+
+# В РАЗРАБОТКЕ (но это не точно)
+
+# - name: restart 
+#   meta: flush_handlers
+
+# - name: autoregistration
+#   delegate_to: localhost  
+#   community.zabbix.zabbix_action:
+
+#     http_login_user: "Admin"
+#     http_login_password: "pass"
+    
+
+#     ansible_host: "{{ hostvars['lb-1']['ansible_host'] }}"
+    
+#     name: "autoregistration"
+#     event_source: "auto_registration" 
+#     state: present
+#     status: enabled
+#     esc_period: "1h"
+    
+#     operations:
+#       - type: "add_host"
+#       - type: "add_to_host_group"
+#         host_groups: ["Linux servers"]
+#       - type: "link_to_template"
+#         templates: ["Linux by Zabbix agent"]

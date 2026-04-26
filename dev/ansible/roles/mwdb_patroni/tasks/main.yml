@@ -1,0 +1,33 @@
+---
+- name: stop and disable postgresql
+  systemd:
+    name: postgresql
+    state: stopped
+    enabled: no
+
+- name: install patroni
+  apt:
+    name: patroni
+    state: present
+    update_cache: yes
+
+- name: copy config patroni
+  template:
+    src: patroni.yml.j2
+    dest: /etc/patroni/config.yml
+  notify: restart patroni
+
+- name: fix permissions for postgres
+  file:
+    path: /var/lib/postgresql/data
+    state: directory
+    owner: postgres
+    group: postgres
+    mode: '0700'
+
+- name: start services
+  service:
+    name: patroni
+    enabled: yes
+    state: started
+

@@ -1,0 +1,9 @@
+---
+- hosts: mwdb_postgresql_servers
+  roles:
+    - mwdb_backup
+
+- hosts: web_servers
+  roles:
+    - web_backup
+

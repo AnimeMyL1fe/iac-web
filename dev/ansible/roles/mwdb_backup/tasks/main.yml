@@ -1,0 +1,32 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for mw_pg_backup_db
+- name: install aws-cli
+  apt:
+    name: awscli
+    state: present
+    update_cache: yes
+
+- name: copy script
+  template:
+    src: pg_backup.sh.j2
+    dest: /usr/local/bin/pg_backup.sh
+    mode: '0755'
+
+- name: cpopy service unit
+  template:
+    src: pg_backup.service.j2
+    dest: /etc/systemd/system//pg_backup.service
+  notify: reload system
+
+- name: copy timer unit
+  template:
+    src: pg_backup.timer.j2
+    dest: /etc/systemd/system/pg_backup.timer
+  notify: reload system
+
+- name: start timer
+  systemd:
+    name: pg_backup.timer
+    enabled: yes
+    state: started

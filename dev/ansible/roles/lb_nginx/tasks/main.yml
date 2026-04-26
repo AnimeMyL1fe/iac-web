@@ -1,30 +1,64 @@
 #SPDX-License-Identifier: MIT-0
 ---
-- name: install nginx
+- name: install lb-packages
   apt:
    name: nginx
    state: present
    update_cache: yes
+
 
 - name: remove default config
   file:
     path: /etc/nginx/sites-enabled/default
     state: absent
 
-- name: copy proxy config
+
+- name: copy mediawiki config
   template:
+<<<<<<< HEAD
+    src: "{{ item.src }}"
+    dest: /etc/nginx/sites-available/{{ item.dest }}
+=======
     src: balancer.j2
     dest: /etc/nginx/sites-available/balancer.conf
+>>>>>>> main
     mode: "0644"
+  loop:
+    - { src: 'mediawiki.conf.j2', dest: 'mediawiki.conf' }
+    - { src: 'zabbix.conf.j2', dest: 'zabbix.conf'}
 
 - name: add symlink
   file:
+<<<<<<< HEAD
+   src: /etc/nginx/sites-available/{{ item.dest }}
+   path: /etc/nginx/sites-enabled/{{ item.dest }}
+   state: link
+  loop:
+   - { dest: 'mediawiki.conf' }
+   - { dest: 'zabbix.conf' }
+=======
     src: /etc/nginx/sites-available/balancer.conf
     path: /etc/nginx/sites-enabled/balancer.conf
     state: link
+>>>>>>> main
   notify: restart nginx
 
-- name: start nginx
+ ## с yc balancer (в процессе...(нет))
+# - name: config nginx
+#   template:
+#     src: nginx.conf.j2
+#     dest: /etc/nginx/sites-available/nginx.conf
+#     mode: "0644"
+#   notify: restart nginx
+
+# - name: add symlink
+#   file:
+#     src: /etc/nginx/sites-available/nginx.conf
+#     path: /etc/nginx/sites-enabled/nginx.conf
+#     state: link
+#   notify: restart nginx
+
+- name: start service
   service:
     name: nginx
     enabled: yes

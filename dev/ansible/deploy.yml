@@ -1,5 +1,49 @@
 ---
 - hosts: all
+<<<<<<< HEAD
+  gather_facts: yes
+
+- hosts: zbx_servers
+  roles:
+    - { role: bootstrap, tags: ['bootstrap'] }
+    - { role: zbx_server, tags: ['zabbix', 'zbx_server'] }
+
+- hosts: etcd_servers
+  roles:
+    - { role: bootstrap, tags: ['bootstrap'] }
+    - { role: mwdb_etcd_cluster, tags: ['etcd'] }
+    - { role: zbx_agent2, tags: ['zabbix', 'zbx_agent'] }
+
+- hosts: mwdb_postgresql_servers
+  roles:
+    - { role: bootstrap, tags: ['bootstrap'] }
+    - { role: mwdb_postgresql, tags: ['db', 'postgresql'] }
+    - { role: mwdb_patroni, tags: ['db', 'patroni'] }
+    - { role: mwdb_backup, tags: ['db', 'backup']}
+    - { role: zbx_agent2, tags: ['zabbix', 'zbx_agent'] }
+
+- hosts: haproxy_servers
+  roles:
+    - { role: bootstrap, tags: ['bootstrap'] }
+    - { role: lb_hapoxy, tags: ['haproxy', 'lb'] }
+    - { role: zbx_agent2, tags: ['zabbix', 'zbx_agent'] }
+
+- hosts: web_servers
+  roles:
+    - { role: bootstrap, tags: ['bootstrap'] }
+    - { role: web_packages, tags: ['web', 'packages']}
+    - { role: web_nginx, tags: ['web', 'nginx'] }
+    - { role: web_mediawiki, tags: ['web', 'mediawiki'] }
+    - { role: web_backup, tags: ['web', 'backup']}
+    - { role: zbx_agent2, tags: ['zabbix', 'zbx_agent'] }
+
+- hosts: lb_servers
+  roles:
+    - { role: bootstrap, tags: ['bootstrap'] }
+    - { role: lb_nginx, tags: ['lb', 'nginx'] }
+    - { role: zbx_agent2, tags: ['zabbix', 'zbx_agent'] }
+
+=======
   gather_facts: yes 
 
 - hosts: mwdb_servers
@@ -17,3 +61,4 @@
 - hosts: lb_servers
   roles:
     - lb_nginx
+>>>>>>> main

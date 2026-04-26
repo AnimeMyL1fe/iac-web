@@ -1,0 +1,36 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for final_check
+- name: check web-servers is alive (MediaWiki)
+  uri:
+    url: "http://{{ hostvars['lb-1']['ansible_host'] }}:3000"
+    status_code: [200, 301, 302]
+    follow_redirects: none 
+    validate_certs: no
+  register: web_check
+  until: web_check.status in [200, 301, 302]
+  retries: 5
+  delay: 5
+  delegate_to: localhost
+
+- name: check zabbix-server is alive (Zabbix)
+  uri:
+    url: "http://{{ hostvars['lb-1']['ansible_host'] }}:3010"
+    status_code: [200, 301, 302]
+    follow_redirects: none
+    validate_certs: no
+  register: zbx_check
+  until: zbx_check.status in [200, 301, 302]
+  retries: 5
+  delay: 5
+  delegate_to: localhost
+
+- name: success status
+  debug:
+    msg: 
+      - "--- SUCCESS REPORT ---"
+      - "Load Balancer IP: {{ hostvars['lb-1']['ansible_host'] }}"
+      - "MediaWiki URL:   http://{{ hostvars['lb-1']['ansible_host'] }}:3000 (Status: {{ web_check.status }})"
+      - "Zabbix URL:      http://{{ hostvars['lb-1']['ansible_host'] }}:3010 (Status: {{ zbx_check.status }})"
+      - "--- SUCCESS REPORT ---"
+      

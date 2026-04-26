@@ -1,0 +1,13 @@
+upstream zabbix_backend {
+    server {{ hostvars['zbx-server1']['ansible_host'] }}:8080;
+}
+
+server {
+    listen 3010;
+    server_name _;
+    location / {
+        proxy_pass http://zabbix_backend;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
